@@ -1,0 +1,58 @@
+project:
+  name: "energy-data-pipeline"
+  timezone: "Europe/Berlin"       # Timezone used for date handling
+
+run:
+  # Controls HOW and WHEN data is ingested
+  # These values can be changed without modifying the code
+  ingestion_frequency: "daily"     # Pipeline run frequency (daily for this task)
+  backfill:
+    enabled: true
+    start_date: "2025-01-01"       # Start date of ingestion period(YYYY-MM-DD) 
+    end_date: "2025-01-07"         # # End date of ingestion period(YYYY-MM-DD) 
+
+source:
+# Energy-Charts API configuration
+  base_url: "https://api.energy-charts.info"    # Base URL of the API
+  timeout_seconds: 60                           # Request timeout
+  user_agent: "energy-data-pipeline/1.0"        # Optional request identifier
+
+datasets:
+# Public power production data for Germany
+  public_power_de:
+    endpoint: "/public_power"      # API endpoint
+    params:
+      country: "de"                # Data is provided at 15-minute resolution
+      resolution: "15min"          # required: 15-min
+    bronze_table: "public_power_de"
+
+  
+  # Electricity price data for DE-LU bidding zone
+  price_de_lu:
+    endpoint: "/price"            # API endpoint
+    params:
+      market: "de-lu"              # DE-LU price zone
+    # Price resolution: hourly before 2025-10-01, 15min after
+    resolution_switch:
+      switch_date: "2025-10-01"
+      before: "hour"
+      after: "15min"
+    bronze_table: "price_de_lu"
+
+storage:
+# Local storage configuration
+  base_path: "data"           # Root data directory
+  bronze_path: "data/bronze"  # Raw data
+  silver_path: "data/silver"  # Cleaned and structured data
+  gold_path: "data/gold"      # Aggregated, analytics-ready data
+
+spark:
+# Spark execution settings
+  app_name: "energy-data-pipeline"
+  master: "local[*]"      # Run locally using all available cores
+  log_level: "ERROR"      # Reduce log noise for clarity
+
+delta:
+  # Required settings to enable Delta Lake locally
+  spark_sql_extensions: "io.delta.sql.DeltaSparkSessionExtension"
+  spark_catalog: "org.apache.spark.sql.delta.catalog.DeltaCatalog"

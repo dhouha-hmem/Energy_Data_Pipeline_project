@@ -1,0 +1,6 @@
+# Python dependencies required to run the pipeline
+
+pyspark         # Apache Spark Python API  
+delta-spark     # Delta Lake support for Spark 
+pyyaml          # Read congiguration files (config.yaml)
+requests        # HTTP requests to Energy-Charts API
