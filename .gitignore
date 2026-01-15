@@ -3,3 +3,13 @@ __pycache__/
 *.log
 hadoop/
 
+# Ignore generated files inside data layers
+data/bronze/*
+data/silver/*
+data/gold/*
+
+# Keep the folder structure
+!data/bronze/.gitkeep
+!data/silver/.gitkeep
+!data/gold/.gitkeep
+
