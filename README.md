@@ -75,6 +75,8 @@ energy-data-pipeline/
 ├── requirements.txt
 └── README.md
 ```
+The `data/` directory is created locally and used to store pipeline outputs.
+
 ## Ingestion Logic
 
 For each date in the configured range:
