@@ -75,7 +75,11 @@ energy-data-pipeline/
 ├── requirements.txt
 └── README.md
 ```
+<<<<<<< Updated upstream
 The `data/` directory is created locally and used to store pipeline outputs.
+=======
+The data/ directory is created locally and used to store pipeline outputs.
+>>>>>>> Stashed changes
 
 ## Ingestion Logic
 
