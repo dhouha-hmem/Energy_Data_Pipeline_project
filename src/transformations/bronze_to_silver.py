@@ -91,8 +91,10 @@ def bronze_power_to_silver(
             to_timestamp(from_unixtime(col("p.unix_seconds"))).alias("timestamp"),
             col("p.values").cast("double").alias("value"),
         )
+
+
         # Drop bad rows
-        .where(col("timestamp").isNotNull() & col("value").isNotNull())
+        .where(col("timestamp").isNotNull() & col("values").isNotNull())
     )
 
     # Write silver Delta table
